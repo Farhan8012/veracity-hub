@@ -12,9 +12,6 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
-import Items from "./pages/Items";
-import ItemDetail from "./pages/ItemDetail";
-import ItemForm from "./pages/ItemForm";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import Activity from "./pages/Activity";
@@ -40,10 +37,6 @@ const App = () => (
             <Route path="/verify" element={<VerifyNews />} />
                 
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                <Route path="/items" element={<ProtectedRoute><Items /></ProtectedRoute>} />
-                <Route path="/items/new" element={<ProtectedRoute><ItemForm /></ProtectedRoute>} />
-                <Route path="/items/:id" element={<ProtectedRoute><ItemDetail /></ProtectedRoute>} />
-                <Route path="/items/:id/edit" element={<ProtectedRoute><ItemForm /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
                 <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />

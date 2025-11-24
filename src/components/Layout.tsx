@@ -38,9 +38,6 @@ export function Layout({ children }: LayoutProps) {
                 <Button variant="ghost" asChild>
                   <Link to="/verify">Verify News</Link>
                 </Button>
-                <Button variant="ghost" asChild>
-                  <Link to="/items">Items</Link>
-                </Button>
               </>
             )}
 

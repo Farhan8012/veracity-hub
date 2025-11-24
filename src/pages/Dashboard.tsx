@@ -1,118 +1,82 @@
-import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { FileText, Tag, TrendingUp, User } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Shield, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const [stats, setStats] = useState({
-    itemsCount: 0,
-    tagsCount: 0,
-    activityCount: 0,
-    loading: true,
-  });
-
-  useEffect(() => {
-    async function loadStats() {
-      if (!user) return;
-
-      const [itemsRes, tagsRes, activityRes] = await Promise.all([
-        supabase.from("items").select("id", { count: "exact", head: true }).eq("owner_id", user.id),
-        supabase.from("tags").select("id", { count: "exact", head: true }),
-        supabase.from("activity_log").select("id", { count: "exact", head: true }).eq("actor_id", user.id),
-      ]);
-
-      setStats({
-        itemsCount: itemsRes.count || 0,
-        tagsCount: tagsRes.count || 0,
-        activityCount: activityRes.count || 0,
-        loading: false,
-      });
-    }
-
-    loadStats();
-  }, [user]);
-
-  if (stats.loading) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[1, 2, 3, 4].map((i) => (
-            <Card key={i}>
-              <CardHeader>
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-8 w-16 mt-2" />
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Welcome back, {user?.email?.split('@')[0]}!</h1>
+          <p className="text-muted-foreground text-lg">
+            Your AI-powered fact-checking companion
+          </p>
+        </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">My Items</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.itemsCount}</div>
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 md:grid-cols-2 mb-8">
+          <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">Verify News Claims</CardTitle>
+              <Shield className="h-8 w-8 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Check the accuracy of news headlines and claims using AI-powered fact verification
+              </p>
+              <Button onClick={() => navigate("/verify")} className="w-full">
+                Start Verifying
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-lg font-medium">How It Works</CardTitle>
+              <CheckCircle className="h-8 w-8 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Submit any news claim or headline</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>AI analyzes the claim for accuracy</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span>Get verdict with confidence score</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tags</CardTitle>
-            <Tag className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle>About This Platform</CardTitle>
+            <CardDescription>
+              Combat misinformation with AI-powered fact-checking
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.tagsCount}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">My Activity</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.activityCount}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Profile</CardTitle>
-            <User className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground">{user?.email}</div>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              This platform uses advanced AI technology to help you verify news claims and combat misinformation.
+              Simply paste any news headline or claim, and our AI will analyze it to provide you with a verdict
+              (True, False, or Uncertain) along with a confidence score and detailed reasoning.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Use the "Verify News" feature to get started, or explore other sections using the navigation menu.
+            </p>
           </CardContent>
         </Card>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Welcome to Your Dashboard</CardTitle>
-          <CardDescription>
-            Manage your items, track activity, and stay informed about misinformation
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
-            Use the navigation menu to explore different sections of the application. You can create new items,
-            view activity logs, and manage your profile.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }
