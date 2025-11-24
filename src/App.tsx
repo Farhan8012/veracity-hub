@@ -18,6 +18,7 @@ import ItemForm from "./pages/ItemForm";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import Activity from "./pages/Activity";
+import VerifyNews from "./pages/VerifyNews";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,9 +34,10 @@ const App = () => (
             <Layout>
               <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify" element={<VerifyNews />} />
                 
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/items" element={<ProtectedRoute><Items /></ProtectedRoute>} />
