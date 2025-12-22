@@ -12,6 +12,7 @@ import { GradientBadge } from "@/components/GradientBadge";
 import { VerdictAnimation } from "@/components/VerdictAnimation";
 import { SourceLogo } from "@/components/SourceLogo";
 import { SkeletonCard } from "@/components/SkeletonCard";
+import { getUserFriendlyError, validation } from "@/lib/errorUtils";
 
 interface VerificationResult {
   id?: string;
@@ -40,10 +41,12 @@ export default function VerifyNews() {
   }, [location.state]);
 
   const handleVerify = async () => {
-    if (!claim.trim()) {
+    // Validate claim input
+    const claimValidation = validation.validateClaim(claim);
+    if (!claimValidation.valid) {
       toast({
         title: "Error",
-        description: "Please enter a news claim to verify",
+        description: claimValidation.error,
         variant: "destructive",
       });
       return;
@@ -55,7 +58,7 @@ export default function VerifyNews() {
 
     try {
       const { data, error } = await supabase.functions.invoke("verify-news", {
-        body: { claim },
+        body: { claim: claim.trim() },
       });
 
       if (error) throw error;
@@ -87,10 +90,9 @@ export default function VerifyNews() {
         description: `Verdict: ${data.verdict} (${data.confidence}% confidence)`,
       });
     } catch (error: any) {
-      console.error("Verification error:", error);
       toast({
         title: "Verification failed",
-        description: error.message || "Failed to verify the news claim",
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     } finally {

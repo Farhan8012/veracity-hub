@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getUserFriendlyError, validation } from "@/lib/errorUtils";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -46,6 +47,17 @@ export default function Profile() {
     e.preventDefault();
     if (!user) return;
 
+    // Validate name length
+    const nameValidation = validation.validateProfileName(name);
+    if (!nameValidation.valid) {
+      toast({
+        title: "Error",
+        description: nameValidation.error,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setUpdating(true);
 
     const { error } = await supabase
@@ -56,7 +68,7 @@ export default function Profile() {
     if (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     } else {
