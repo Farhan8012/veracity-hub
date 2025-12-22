@@ -11,6 +11,7 @@ import { Trash2, Tag, RefreshCw, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { validation } from "@/lib/errorUtils";
 
 interface BookmarkedVerification {
   id: string;
@@ -69,8 +70,21 @@ export default function Bookmarks() {
     const tag = newTag[bookmarkId]?.trim();
     if (!tag) return;
 
+    // Validate tag
+    const tagValidation = validation.validateTag(tag);
+    if (!tagValidation.valid) {
+      toast({ title: "Invalid tag", description: tagValidation.error, variant: "destructive" });
+      return;
+    }
+
     const bookmark = bookmarks.find(b => b.id === bookmarkId);
     if (!bookmark) return;
+
+    // Check for duplicate tags
+    if (bookmark.tags?.includes(tag)) {
+      toast({ title: "Tag already exists", variant: "destructive" });
+      return;
+    }
 
     const updatedTags = [...(bookmark.tags || []), tag];
     await supabase.from("bookmarks").update({ tags: updatedTags }).eq("id", bookmarkId);

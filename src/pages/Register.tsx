@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from "@/hooks/use-toast";
 import { signUp } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
+import { getUserFriendlyError } from "@/lib/errorUtils";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -45,7 +46,7 @@ export default function Register() {
     if (error) {
       toast({
         title: "Error",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     } else {
