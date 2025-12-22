@@ -41,7 +41,7 @@ export function Layout({ children }: LayoutProps) {
       <header className="border-b bg-card/80 backdrop-blur-md sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link to="/" className="text-xl font-bold text-foreground bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Fake News Detection
+            TruthWave
           </Link>
 
           <nav className="flex items-center gap-2 md:gap-4">
@@ -127,7 +127,7 @@ export function Layout({ children }: LayoutProps) {
 
       <footer className="border-t bg-card/80 backdrop-blur-md py-6 mt-12">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © 2025 Fake News Detection. Built with Lovable Cloud.
+          © 2025 TruthWave. Built with Lovable Cloud.
         </div>
       </footer>
     </div>

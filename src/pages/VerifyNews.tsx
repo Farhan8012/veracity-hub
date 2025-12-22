@@ -130,7 +130,7 @@ export default function VerifyNews() {
       <GlassmorphicCard gradient>
         <CardHeader className="pb-4">
           <CardTitle className="text-3xl bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
-            Fake News Detection
+            TruthWave Verification
           </CardTitle>
           <CardDescription>
             Enter a news claim below and our AI will analyze it for accuracy
